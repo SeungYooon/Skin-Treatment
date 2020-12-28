@@ -1,0 +1,115 @@
+<resources>
+    <string name="app_name">Toy Project</string>
+
+    <!-- skin type -->
+    <string name="toxin">보톡스</string>
+    <string name="filler">필러/스컬트라</string>
+    <string name="injection">윤곽/조각/주사</string>
+    <string name="lifting">리프팅</string>
+    <string name="acne">여드름/모공</string>
+    <string name="pigment">색소</string>
+    <string name="skin_booster">스킨부스터</string>
+    <string name="skin_care">스킨케어</string>
+    <string name="waxing">제모</string>
+    <string name="body">체형</string>
+    <string name="anti_aging">항노화수액</string>
+
+    <!-- skin title -->
+    <string name="toxin_title">사각턱, 잔주름, 발달된 근육, 다한증 간편하게 개선</string>
+    <string name="filler_title">수술 없이 입체적인 동안 얼굴</string>
+    <string name="injection_title">숨겨진 V라인을 찾자</string>
+    <string name="lifting_title">시간을 되돌리는 탄력 리프팅</string>
+    <string name="acne_title">재발을 줄인 여드름 치료</string>
+    <string name="pigment_title">기미·잡티·색소 개선으로 맑고 투명한 피부</string>
+    <string name="skin_booster_title">스킨 부스팅으로 피부 속부터 건강하게</string>
+    <string name="skin_care_title">피부 속부터 반짝이는 피부</string>
+    <string name="waxing_title">피부 손상을 줄인 안전한 제모</string>
+    <string name="body_title">탄력 있고 매끈한 바디라인</string>
+    <string name="anti_aging_title">노화방지, 면역력 증진, 투명한 피부, 피로회복</string>
+
+    <!-- toxin -->
+    <string name="t1">사각턱보톡스</string>
+    <string name="t2">주름보톡스</string>
+    <string name="t3">바디보톡스</string>
+    <string name="t4">다한증보톡스</string>
+
+    <!-- filler -->
+    <string name="f1">페이스필러</string>
+    <string name="f2">입술/입꼬리필러</string>
+    <string name="f3">하이코/슈퍼하이코</string>
+    <string name="f4">스컬트라</string>
+
+    <!-- injection -->
+    <string name="i1">윤곽주사</string>
+    <string name="i2">조각주사</string>
+    <string name="i3">코 주각주사</string>
+    <string name="i4">제로핏 주사</string>
+
+    <!-- lifting -->
+    <string name="l1">인모드</string>
+    <string name="l2">슈링크/뉴테라</string>
+    <string name="l3">4세대 써마지</string>
+    <string name="l4">울쎄라</string>
+    <string name="l5">실리프팅</string>
+    <string name="l6">바디리프팅</string>
+
+    <!-- acne -->
+    <string name="a1">알라딘필링</string>
+    <string name="a2">인트라셀</string>
+    <string name="a3">아그네스</string>
+    <string name="a4">아크네필링</string>
+    <string name="a5">여드름관리/재생관리</string>
+    <string name="a6">염증주사</string>
+    <string name="a7">여드름 약 처방</string>
+
+    <!-- pigment -->
+    <string name="p1">레이저토닝</string>
+    <string name="p2">IPL</string>
+    <string name="p3">비비레이저</string>
+    <string name="p4">클라리티</string>
+    <string name="p5">점/사마귀/비립종</string>
+
+    <!-- skin booster -->
+    <string name="s1">리쥬란힐러</string>
+    <string name="s2">NCFT동안치료</string>
+    <string name="s3">물광주사</string>
+    <string name="s4">아기주사/연어주사</string>
+
+    <!-- skin care -->
+    <string name="c1">미백관리</string>
+    <string name="c2">비타민관리</string>
+    <string name="c3">생크림필</string>
+    <string name="c4">고주파관리</string>
+    <string name="c5">골드텔라피</string>
+    <string name="c6">오투덤산소테라피</string>
+    <string name="c7">PHA필링</string>
+
+    <!-- waxing -->
+    <string name="w1">얼굴제모(여성)</string>
+    <string name="w2">바디제모(여성)</string>
+    <string name="w3">얼굴제모(남성)</string>
+    <string name="w4">바디제모(남성)</string>
+
+    <!-- body -->
+    <string name="b1">제로핏 주사</string>
+    <string name="b2">엣지주사</string>
+    <string name="b3">미쿨</string>
+    <string name="b4">울핏</string>
+    <string name="b5">다이어트 약 처방</string>
+
+    <!-- anti -->
+    <string name="n1">플러스면역주사</string>
+    <string name="n2">백옥주사</string>
+    <string name="n3">신데렐라 주사</string>
+
+    <!-- answer -->
+    <string name="yes">네</string>
+    <string name="no">아니요</string>
+
+    <!-- search -->
+    <string name="search">시술을 검색해보세요</string>
+
+    <string name="transition_name">skin</string>
+
+    <string name="notification_title">ZOYI APP</string>
+</resources>
