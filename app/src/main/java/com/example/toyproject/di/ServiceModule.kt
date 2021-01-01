@@ -1,8 +1,8 @@
 package com.example.toyproject.di
 
-import com.example.toyproject.network.api.ChannelApi
-import com.example.toyproject.network.api.ChannelHelper
-import com.example.toyproject.network.api.ChannelHelperImpl
+import com.example.toyproject.data.remote.api.ChannelApi
+import com.example.toyproject.data.remote.api.ChannelHelper
+import com.example.toyproject.data.remote.api.ChannelHelperImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

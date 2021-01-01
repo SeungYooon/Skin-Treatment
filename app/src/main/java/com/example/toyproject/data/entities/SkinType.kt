@@ -1,13 +1,14 @@
-package com.example.toyproject.data
+package com.example.toyproject.data.entities
 
 import androidx.annotation.StringRes
 import com.example.toyproject.R
+import java.io.Serializable
 
 enum class SkinType(
     @StringRes val skinDescription: Int,
     val skinImg: String,
     @StringRes val typeName: Int
-) {
+) : Serializable {
     TOXIN(
         R.string.toxin_title,
         "http://intranet.toxnfill.com/uploadFiles/C00001/eventImg/20200521162815_6.gif",

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/detailFragment">
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.toyproject.ui.detail.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="type"
+            android:defaultValue="TOXIN"
+            app:argType="com.example.toyproject.data.entities.SkinType" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailCustomFragment"
+        android:name="com.example.toyproject.ui.detail.DetailCustomFragment"
+        android:label="DetailCustomFragment">
+        <argument
+            android:name="type"
+            android:defaultValue="TOXIN"
+            app:argType="com.example.toyproject.data.entities.SkinType" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_detailCustomFragment"
+        app:destination="@id/detailCustomFragment" />
+    <action
+        android:id="@+id/action_global_detailFragment"
+        app:destination="@id/detailFragment" />
+</navigation>

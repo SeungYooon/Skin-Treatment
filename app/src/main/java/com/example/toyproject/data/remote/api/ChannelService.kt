@@ -1,11 +1,8 @@
-package com.example.toyproject.network.api
+package com.example.toyproject.data.remote.api
 
-import com.example.toyproject.data.Categories
-import com.example.toyproject.data.Category
-import com.example.toyproject.utils.Constants
+import com.example.toyproject.data.entities.Categories
 import io.reactivex.Single
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface ChannelApi {

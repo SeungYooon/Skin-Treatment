@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyproject.R
+import com.example.toyproject.data.entities.SkinType
 import com.example.toyproject.databinding.ItemSkinBinding
 import com.example.toyproject.extensions.GlideApp
-import com.example.toyproject.data.SkinType
 import javax.inject.Inject
 
 class SkinAdapter @Inject constructor(
@@ -52,8 +52,8 @@ class SkinAdapter @Inject constructor(
                     .placeholder(R.drawable.bubble_filled)
                     .error(R.drawable.ch_network_error_illust)
                     .into(imgSkin)
-                txtSkinName.setText(item.typeName)
-                txtDescription.setText(item.skinDescription)
+                item.typeName.let { txtSkinName.setText(it) }
+                item.skinDescription.let { txtDescription.setText(it) }
 
                 imgSkin.setOnClickListener {
                     listener?.onClick(binding.imgSkin, item)

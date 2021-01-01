@@ -4,26 +4,37 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.toyproject.R
 import com.example.toyproject.base.BaseFragment
-import com.example.toyproject.data.SkinInfo
+import com.example.toyproject.data.entities.SkinInfo
+import com.example.toyproject.data.entities.SkinType
 import com.example.toyproject.databinding.FragmentDetailBinding
 import com.example.toyproject.extensions.GlideApp
+import com.example.toyproject.extensions.setAdapter
+import com.example.toyproject.ui.detail.DetailActivity.Companion.KEY
 import com.example.toyproject.utils.GridSpaceItemDecoration
-import com.example.toyproject.data.SkinType
 import com.example.toyproject.viewmodel.ChannelViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class DetailFragment :
-    BaseFragment<FragmentDetailBinding, ChannelViewModel>() {
+    BaseFragment<FragmentDetailBinding, ChannelViewModel>(), DetailAdapter.OnClickListener {
 
     @Inject
     lateinit var adapter: DetailAdapter
 
     override val viewModel: ChannelViewModel by viewModels()
 
-    private val type by lazy { requireArguments().getSerializable(KEY) as SkinType }
+    private val type by lazy { requireArguments().getSerializable(KEY) as SkinType? }
+
+    private val spaceItemDecoration by lazy { (resources.displayMetrics.density * 10).toInt() }
 
     private var _binding: FragmentDetailBinding? = null
 
@@ -42,23 +53,23 @@ class DetailFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            txtSkinName.setText(type.typeName)
+            type?.let { txtSkinName.setText(it.typeName) }
             context?.let {
-                GlideApp.with(it).load(type.skinImg)
+                GlideApp.with(it).load(type?.skinImg)
                     .placeholder(R.mipmap.ic_launcher)
+                    .transform(CircleCrop())
                     .error(R.drawable.ch_network_error_illust)
                     .into(ivMainSkin)
+
+                setAdapter(rvDetail, adapter)
+                rvDetail.addItemDecoration(GridSpaceItemDecoration(spaceItemDecoration))
+
+                ViewCompat.setTransitionName(ivMainSkin, ivMainSkin.transitionName)
             }
         }
 
-        adapter = DetailAdapter()
-        binding.rvDetail.adapter = adapter
-
-        val x = (resources.displayMetrics.density * 10).toInt()
-        binding.rvDetail.addItemDecoration(GridSpaceItemDecoration(x))
-
         adapter.submitList(
-            when (type.typeName) {
+            when (type?.typeName) {
                 R.string.toxin -> mutableListOf(
                     SkinInfo(
                         R.string.t1,
@@ -264,12 +275,35 @@ class DetailFragment :
         )
     }
 
+    /**
+     * Using
+     * 1. MaterialDialog
+     * 2. Navigation
+     */
+
+    override fun onClick(imageView: ImageView, skinInfo: SkinInfo) {
+        /*MaterialDialog(requireContext()).show {
+            customView(
+                view = FragmentCustomDialogBinding.inflate(
+                    LayoutInflater.from(context),
+                    null,
+                    false
+                ).also {
+                    GlideApp.with(context)
+                        .load("https://intranet.toxnfill.com/uploadFiles/C00001/eventImg/20201027140955_4_6_8.jpg")
+                        .into(it.ivDialog)
+                    it.ivDialog.clipToOutline = true
+                }.root
+            )
+            cornerRadius(context.resources.getDimension(R.dimen.dialog_dimen))
+        }*/
+
+        val bundle = bundleOf(KEY to type)
+        findNavController().navigate(R.id.action_global_detailCustomFragment, bundle)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val KEY = "skin"
     }
 }

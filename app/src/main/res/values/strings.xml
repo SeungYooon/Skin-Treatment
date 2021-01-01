@@ -112,4 +112,8 @@
     <string name="transition_name">skin</string>
 
     <string name="notification_title">ZOYI APP</string>
+
+    <!-- key & secret -->
+    <string name="key">5fe305e7c2409cc49193</string>
+    <string name="secret">29fee1818ad1b62ddad9c34bb66f2321</string>
 </resources>
