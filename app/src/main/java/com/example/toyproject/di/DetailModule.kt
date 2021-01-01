@@ -10,6 +10,8 @@ import dagger.hilt.android.components.FragmentComponent
 @Module
 @InstallIn(FragmentComponent::class)
 object DetailModule {
+
     @Provides
-    fun provideDetailAdapter(fragment: Fragment): DetailAdapter = DetailAdapter()
+    fun provideDetailAdapter(fragment: Fragment): DetailAdapter =
+        DetailAdapter(fragment as? DetailAdapter.OnClickListener)
 }

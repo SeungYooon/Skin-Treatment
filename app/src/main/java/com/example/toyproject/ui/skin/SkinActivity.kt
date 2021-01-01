@@ -1,25 +1,17 @@
 package com.example.toyproject.ui.skin
 
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.ImageView
-import android.widget.SearchView
 import androidx.activity.viewModels
-import androidx.core.view.MenuItemCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.example.toyproject.R
 import com.example.toyproject.base.BaseActivity
-import com.example.toyproject.data.Categories
-import com.example.toyproject.data.Category
+import com.example.toyproject.data.entities.Categories
+import com.example.toyproject.data.entities.SkinType
 import com.example.toyproject.databinding.ActivitySkinBinding
 import com.example.toyproject.extensions.bindAdapterTransform
 import com.example.toyproject.ui.detail.DetailActivity.Companion.startActivityWithTransition
 import com.example.toyproject.utils.Constants.PLUGIN_KEY
-import com.example.toyproject.data.SkinType
-import com.example.toyproject.extensions.hideSoftInput
-import com.example.toyproject.extensions.showToast
 import com.example.toyproject.utils.Status
 import com.example.toyproject.viewmodel.ChannelViewModel
 import com.zoyi.channel.plugin.android.ChannelIO
@@ -28,7 +20,6 @@ import com.zoyi.channel.plugin.android.open.enumerate.BootStatus
 import com.zoyi.channel.plugin.android.open.enumerate.ChannelButtonPosition
 import com.zoyi.channel.plugin.android.open.option.ChannelButtonOption
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_skin.*
 import javax.inject.Inject
 
 @AndroidEntryPoint

@@ -1,8 +1,7 @@
 package com.example.toyproject.di
 
-import android.util.Log
 import com.example.toyproject.BuildConfig
-import com.example.toyproject.network.HeaderInterceptor
+import com.example.toyproject.data.remote.api.network.HeaderInterceptor
 import com.example.toyproject.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
