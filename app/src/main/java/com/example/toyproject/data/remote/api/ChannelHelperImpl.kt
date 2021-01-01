@@ -1,7 +1,6 @@
-package com.example.toyproject.network.api
+package com.example.toyproject.data.remote.api
 
-import com.example.toyproject.data.Categories
-import com.example.toyproject.data.Category
+import com.example.toyproject.data.entities.Categories
 import io.reactivex.Single
 import javax.inject.Inject
 

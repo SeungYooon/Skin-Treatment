@@ -1,4 +1,4 @@
-package com.example.toyproject.network
+package com.example.toyproject.data.remote.api.network
 
 import com.example.toyproject.utils.Constants.ACCESS_KEY
 import com.example.toyproject.utils.Constants.ACCESS_SECRET
