@@ -7,10 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseActivity<B : ViewBinding, VM : BaseViewModel>(private val bindingFactory: (LayoutInflater) -> B) :
+abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(private val bindingFactory: (LayoutInflater) -> VB) :
     AppCompatActivity() {
 
-    lateinit var binding: B
+    lateinit var binding: VB
 
     abstract val viewModel: VM
 

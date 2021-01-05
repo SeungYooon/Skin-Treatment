@@ -2,16 +2,38 @@ package com.example.toyproject.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseFragment<B : ViewBinding, VM : BaseViewModel> :
+abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> :
     Fragment() {
 
-    lateinit var bindingFactory: (LayoutInflater, ViewGroup?, Bundle?) -> B
+    private var _binding: ViewBinding? = null
+    abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
+
+    @Suppress("UNCHECKED_CAST")
+    protected val binding: VB
+        get() = _binding as VB
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = bindingInflater.invoke(inflater, container, false)
+        return requireNotNull(_binding).root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUp()
+    }
+
+    abstract fun setUp()
 
     abstract val viewModel: VM
 
@@ -21,5 +43,6 @@ abstract class BaseFragment<B : ViewBinding, VM : BaseViewModel> :
     override fun onDestroy() {
         super.onDestroy()
         disposables.clear()
+        _binding = null
     }
 }
