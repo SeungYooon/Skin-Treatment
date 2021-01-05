@@ -1,8 +1,6 @@
 package com.example.toyproject.ui.detail
 
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.os.bundleOf
@@ -25,7 +23,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailFragment :
-    BaseFragment<FragmentDetailBinding, ChannelViewModel>(), DetailAdapter.OnClickListener {
+    BaseFragment<FragmentDetailBinding, ChannelViewModel>(),
+    DetailAdapter.OnClickListener {
 
     @Inject
     lateinit var adapter: DetailAdapter
@@ -36,22 +35,10 @@ class DetailFragment :
 
     private val spaceItemDecoration by lazy { (resources.displayMetrics.density * 10).toInt() }
 
-    private var _binding: FragmentDetailBinding? = null
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDetailBinding =
+        FragmentDetailBinding::inflate
 
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentDetailBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun setUp() {
         binding.apply {
             type?.let { txtSkinName.setText(it.typeName) }
             context?.let {
@@ -274,13 +261,11 @@ class DetailFragment :
             }
         )
     }
-
     /**
      * Using
      * 1. MaterialDialog
      * 2. Navigation
      */
-
     override fun onClick(imageView: ImageView, skinInfo: SkinInfo) {
         /*MaterialDialog(requireContext()).show {
             customView(
@@ -300,10 +285,5 @@ class DetailFragment :
 
         val bundle = bundleOf(KEY to type)
         findNavController().navigate(R.id.action_global_detailCustomFragment, bundle)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
