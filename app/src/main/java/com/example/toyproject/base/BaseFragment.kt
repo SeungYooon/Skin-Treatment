@@ -7,17 +7,13 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> :
-    Fragment() {
+abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
-    private var _binding: ViewBinding? = null
+    private var _binding: VB? = null
     abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
 
-    @Suppress("UNCHECKED_CAST")
-    protected val binding: VB
-        get() = _binding as VB
+    protected val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,24 +21,12 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> :
         savedInstanceState: Bundle?
     ): View? {
         _binding = bindingInflater.invoke(inflater, container, false)
-        return requireNotNull(_binding).root
+        return binding.root
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setUp()
-    }
-
-    abstract fun setUp()
-
-    abstract val viewModel: VM
-
-    private val disposables by lazy { CompositeDisposable() }
 
     @CallSuper
     override fun onDestroy() {
         super.onDestroy()
-        disposables.clear()
         _binding = null
     }
 }

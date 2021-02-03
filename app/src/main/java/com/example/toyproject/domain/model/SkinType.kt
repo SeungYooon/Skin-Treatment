@@ -1,18 +1,20 @@
-package com.example.toyproject.data.entities
+package com.example.toyproject.domain.model
 
+import android.os.Parcelable
 import androidx.annotation.StringRes
 import com.example.toyproject.R
-import java.io.Serializable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 enum class SkinType(
     @StringRes val skinDescription: Int,
     val skinImg: String,
     @StringRes val typeName: Int
-) : Serializable {
+) : Parcelable {
     TOXIN(
         R.string.toxin_title,
         "http://intranet.toxnfill.com/uploadFiles/C00001/eventImg/20200521162815_6.gif",
-        R.string.toxin
+        R.string.toxin,
     ),
     FILLER(
         R.string.filler_title,
@@ -34,34 +36,9 @@ enum class SkinType(
         "http://intranet.toxnfill.com/uploadFiles/C00001/eventImg/20200522152846_6.gif",
         R.string.acne
     ),
-    PIGMENT(
-        R.string.pigment_title,
-        "http://intranet.toxnfill.com/uploadFiles/C00001/eventImg/20200522152939_6.gif",
-        R.string.pigment
-    ),
-    SKIN_BOOSTER(
-        R.string.skin_booster_title,
-        "http://intranet.toxnfill.com/uploadFiles/C00001/eventImg/20200522152627_6.gif",
-        R.string.skin_booster
-    ),
-    SKIN_CARE(
-        R.string.skin_care_title,
-        "http://intranet.toxnfill.com/uploadFiles/C00001/eventImg/20200522152812_6.gif",
-        R.string.skin_care
-    ),
     WAXING(
         R.string.waxing_title,
         "http://intranet.toxnfill.com/uploadFiles/C00001/eventImg/20200522152736_6.gif",
         R.string.waxing
-    ),
-    BODY(
-        R.string.body_title,
-        "http://intranet.toxnfill.com/uploadFiles/C00001/eventImg/20200522152543_6.gif",
-        R.string.body
-    ),
-    ANTI_AGING(
-        R.string.acne_title,
-        "http://intranet.toxnfill.com/uploadFiles/C00001/eventImg/20200522152801_6.gif",
-        R.string.anti_aging
     )
 }

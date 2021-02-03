@@ -22,11 +22,22 @@
 
         <!-- TextVIew -->
         <item name="android:includeFontPadding">false</item>
+
+        <!-- Transition -->
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
+    <!-- LoadingView-->
     <style name="Widget.Sample.LoadingView" parent="">
         <item name="indicator">@drawable/oval</item>
         <item name="radius">6dp</item>
         <item name="indicatorPadding">8dp</item>
+    </style>
+
+    <!-- Chip-->
+    <style name="chipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif-condensed-light</item>
     </style>
 </resources>
