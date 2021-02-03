@@ -10,9 +10,8 @@ import android.view.animation.Interpolator
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.res.ResourcesCompat
 import com.example.toyproject.R
-import com.example.toyproject.extensions.toPixels
+import com.example.toyproject.util.extensions.toPixels
 import java.lang.Math.PI
-import java.lang.Math.sin
 
 class LoadingView @JvmOverloads constructor(
     context: Context,
@@ -72,9 +71,8 @@ class LoadingView @JvmOverloads constructor(
     }
 
     private class SineInterpolator : Interpolator {
-        override fun getInterpolation(input: Float): Float {
-            return sin(input.toDouble() * PI * 2.0).toFloat()
-        }
+        override fun getInterpolation(input: Float): Float =
+            kotlin.math.sin(input.toDouble() * PI * 2.0).toFloat()
     }
 
     companion object {

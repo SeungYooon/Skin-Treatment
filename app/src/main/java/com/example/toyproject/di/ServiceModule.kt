@@ -1,8 +1,8 @@
 package com.example.toyproject.di
 
-import com.example.toyproject.data.remote.api.ChannelApi
-import com.example.toyproject.data.remote.api.ChannelHelper
-import com.example.toyproject.data.remote.api.ChannelHelperImpl
+import com.example.toyproject.data.remote.SkinDataSource
+import com.example.toyproject.data.remote.SkinDataSourceImpl
+import com.example.toyproject.data.remote.service.SkinService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,9 +16,11 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun provideChannelApi(retrofit: Retrofit): ChannelApi = retrofit.create(ChannelApi::class.java)
+    fun provideSkinService(retrofit: Retrofit): SkinService =
+        retrofit.create(SkinService::class.java)
 
     @Provides
     @Singleton
-    fun provideChannelHelper(channelHelper: ChannelHelperImpl): ChannelHelper = channelHelper
+    fun provideSkinDataSource(skinDataSourceImpl: SkinDataSourceImpl): SkinDataSource =
+        skinDataSourceImpl
 }

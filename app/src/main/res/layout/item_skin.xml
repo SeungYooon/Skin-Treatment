@@ -21,14 +21,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="피부에 수분이 부족하신가요?" />
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
         android:layout_width="320dp"
         android:layout_height="320dp"
-        android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:elevation="10dp"
-        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@color/cardview_shadow_end_color"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,13 +60,12 @@
                 android:layout_marginBottom="8dp"
                 android:paddingTop="4dp"
                 android:textAllCaps="true"
-                android:textColor="@android:color/black"
+                android:textColor="@color/design_default_color_secondary_variant"
                 android:textSize="12sp"
-                android:textStyle="bold"
+                android:textStyle="italic"
                 tools:text="skin type" />
-
         </FrameLayout>
 
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,34 +5,21 @@ import android.view.LayoutInflater
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(private val bindingFactory: (LayoutInflater) -> VB) :
+abstract class BaseActivity<VB : ViewBinding>(private val inflate: (LayoutInflater) -> VB) :
     AppCompatActivity() {
 
-    lateinit var binding: VB
-
-    abstract val viewModel: VM
-
-    open fun setupUI() {}
-
-    open fun setupAPI() {}
+    protected lateinit var binding: VB
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = bindingFactory.invoke(layoutInflater)
+        binding = inflate(layoutInflater)
         setContentView(binding.root)
-
-        setupUI()
-        setupAPI()
     }
-
-    private val disposables by lazy { CompositeDisposable() }
 
     @CallSuper
     override fun onDestroy() {
         super.onDestroy()
-        disposables.clear()
     }
 }

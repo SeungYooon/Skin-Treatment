@@ -1,8 +1,11 @@
 package com.example.toyproject.di
 
 import com.example.toyproject.BuildConfig
-import com.example.toyproject.data.remote.api.network.HeaderInterceptor
-import com.example.toyproject.utils.Constants.BASE_URL
+import com.example.toyproject.data.remote.service.HeaderInterceptor
+import com.example.toyproject.util.Constants.BASE_URL
+import com.example.toyproject.util.Constants.CONNECT_TIMEOUT
+import com.example.toyproject.util.Constants.READ_TIMEOUT
+import com.example.toyproject.util.Constants.WRITE_TIMEOUT
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,9 +22,6 @@ import javax.inject.Singleton
 @InstallIn(ApplicationComponent::class)
 object NetworkModule {
 
-    private const val CONNECT_TIMEOUT = 40L
-    private const val WRITE_TIMEOUT = 30L
-    private const val READ_TIMEOUT = 40L
     private val headerInterceptor by lazy { HeaderInterceptor() }
 
     private fun loggingInterceptor(): HttpLoggingInterceptor {
