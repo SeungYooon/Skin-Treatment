@@ -1,23 +1,15 @@
 package com.example.toyproject.ui.skin
 
-import android.graphics.Typeface
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.toyproject.R
-import com.example.toyproject.data.entities.SkinType
 import com.example.toyproject.databinding.ItemSkinBinding
-import com.example.toyproject.extensions.GlideApp
+import com.example.toyproject.domain.model.SkinType
+import com.example.toyproject.util.extensions.bindImage
 import javax.inject.Inject
 
 class SkinAdapter @Inject constructor(
@@ -27,6 +19,8 @@ class SkinAdapter @Inject constructor(
     init {
         setHasStableIds(true)
     }
+
+    override fun getItemId(position: Int): Long = position.toLong()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SkinViewHolder {
         return SkinViewHolder(
@@ -39,8 +33,7 @@ class SkinAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: SkinViewHolder, position: Int) {
-        val item = currentList[position]
-        holder.bind(item)
+        holder.bind(getItem(position))
     }
 
     inner class SkinViewHolder(private val binding: ItemSkinBinding) :
@@ -48,27 +41,12 @@ class SkinAdapter @Inject constructor(
 
         fun bind(item: SkinType) {
             binding.apply {
-                GlideApp.with(itemView.context).load(item.skinImg)
-                    .placeholder(R.drawable.bubble_filled)
-                    .error(R.drawable.ch_network_error_illust)
-                    .into(imgSkin)
-                item.typeName.let { txtSkinName.setText(it) }
-                item.skinDescription.let { txtDescription.setText(it) }
+                bindImage(imgSkin, item.skinImg)
+                txtSkinName.setText(item.typeName)
+                txtDescription.setText(item.skinDescription)
 
                 imgSkin.setOnClickListener {
-                    listener?.onClick(binding.imgSkin, item)
-                }
-
-                SpannableStringBuilder(txtSkinName.text).apply {
-                    setSpan(object : ClickableSpan() {
-                        override fun onClick(view: View) {
-                            Typeface.BOLD
-                            listener?.onClick(binding.imgSkin, item)
-                        }
-                    }, 0, length, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE)
-                }.let {
-                    txtSkinName.movementMethod = LinkMovementMethod.getInstance()
-                    txtSkinName.setText(it, TextView.BufferType.SPANNABLE)
+                    listener?.onClick(imgSkin, item)
                 }
             }
         }

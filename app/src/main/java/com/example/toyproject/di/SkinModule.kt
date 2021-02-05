@@ -1,17 +1,17 @@
 package com.example.toyproject.di
 
-import android.app.Activity
+import androidx.fragment.app.Fragment
 import com.example.toyproject.ui.skin.SkinAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.FragmentComponent
 
 @Module
-@InstallIn(ActivityComponent::class)
+@InstallIn(FragmentComponent::class)
 object SkinModule {
 
     @Provides
-    fun provideSkinAdapter(activity: Activity): SkinAdapter =
-        SkinAdapter(activity as? SkinAdapter.OnClickListener)
+    fun provideSkinAdapter(fragment: Fragment): SkinAdapter =
+        SkinAdapter(fragment as? SkinAdapter.OnClickListener)
 }
