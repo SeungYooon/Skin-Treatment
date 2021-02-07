@@ -19,7 +19,6 @@ class DetailCustomFragment : BaseFragment<FragmentDetailCustomBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupUI()
     }
 

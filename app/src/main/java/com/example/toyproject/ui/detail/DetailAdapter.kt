@@ -2,25 +2,21 @@ package com.example.toyproject.ui.detail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.recyclerview.widget.AsyncDifferConfig
-import androidx.recyclerview.widget.DiffUtil
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.toyproject.R
-import com.example.toyproject.data.entities.SkinInfo
+import com.example.toyproject.data.db.entities.Skins
 import com.example.toyproject.databinding.ItemDetailBinding
-import com.example.toyproject.extensions.GlideApp
-import javax.inject.Inject
+import com.example.toyproject.util.extensions.SkinsDiffCallback
+import com.example.toyproject.util.extensions.bindImage
 
-class DetailAdapter @Inject constructor(
-    private val listener: OnClickListener?
-) :
-    ListAdapter<SkinInfo, DetailAdapter.DetailViewHolder>(DIFF_CALLBACK) {
+class DetailAdapter : ListAdapter<Skins, DetailAdapter.DetailViewHolder>(SkinsDiffCallback()) {
 
     init {
         setHasStableIds(true)
     }
+
+    override fun getItemId(position: Int): Long = position.toLong()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder {
         return DetailViewHolder(
@@ -33,56 +29,25 @@ class DetailAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
-        val item = currentList[position]
-        holder.bind(item)
+        holder.bind(getItem(position))
     }
 
     inner class DetailViewHolder(private val binding: ItemDetailBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: SkinInfo) {
+        fun bind(item: Skins) {
             binding.apply {
-                GlideApp.with(itemView.context).load(item.skinFace)
-                    .placeholder(R.mipmap.ic_launcher)
-                    .error(R.drawable.ch_network_error_illust)
-                    .into(imgSkin)
-                txtSkinName.setText(item.skinTitle)
+                bindImage(imgSkin, item.imageUrl)
+
+                txtSkinKinds.text = item.skinKinds
+                txtDescription.text = item.description
 
                 imgSkin.setOnClickListener {
-                    listener?.onClick(binding.imgSkin, item)
+                    it.findNavController().navigate(
+                        DetailFragmentDirections.actionDetailFragmentToDetailCustomFragment(item)
+                    )
                 }
-
-                /*  MaterialDialog(root.context).show {
-                      customView(
-                          view = FragmentCustomDialogBinding.inflate(
-                              LayoutInflater.from(root.context),
-                              null,
-                              false
-                          ).also {
-                              GlideApp.with(context)
-                                  .load("https://intranet.toxnfill.com/uploadFiles/C00001/eventImg/20201027140955_4_6_8.jpg")
-                                  .into(it.ivDialog)
-                              it.ivDialog.clipToOutline = true
-                          }.root
-                      )
-                      cornerRadius(root.context.resources.getDimension(R.dimen.dialog_dimen))
-                  }*/
             }
         }
-    }
-
-    interface OnClickListener {
-        fun onClick(imageView: ImageView, skinInfo: SkinInfo)
-    }
-
-    companion object {
-        private val DIFF_CALLBACK =
-            AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<SkinInfo>() {
-                override fun areItemsTheSame(oldItem: SkinInfo, newItem: SkinInfo): Boolean =
-                    oldItem.skinTitle == newItem.skinTitle
-
-                override fun areContentsTheSame(oldItem: SkinInfo, newItem: SkinInfo): Boolean =
-                    oldItem == newItem
-            }).build()
     }
 }
