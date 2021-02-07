@@ -84,7 +84,7 @@
                 android:textAppearance="@style/chipTextAppearance"
                 android:textColor="@color/white"
                 app:chipBackgroundColor="#CCa189f1"
-                app:layout_constraintStart_toEndOf="@id/chipInjection"
+                app:layout_constraintStart_toEndOf="@id/chipFiller"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.chip.Chip
@@ -97,7 +97,7 @@
                 android:textAppearance="@style/chipTextAppearance"
                 android:textColor="@color/white"
                 app:chipBackgroundColor="#CCa189f1"
-                app:layout_constraintStart_toEndOf="@id/chipLifting"
+                app:layout_constraintStart_toEndOf="@id/chipInjection"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.chip.Chip
@@ -110,7 +110,7 @@
                 android:textAppearance="@style/chipTextAppearance"
                 android:textColor="@color/white"
                 app:chipBackgroundColor="#CCa189f1"
-                app:layout_constraintStart_toEndOf="@id/chipAcne"
+                app:layout_constraintStart_toEndOf="@id/chipLifting"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.chip.Chip
@@ -123,7 +123,7 @@
                 android:textAppearance="@style/chipTextAppearance"
                 android:textColor="@color/white"
                 app:chipBackgroundColor="#CCa189f1"
-                app:layout_constraintStart_toEndOf="@id/chipWaxing"
+                app:layout_constraintStart_toEndOf="@id/chipAcne"
                 app:layout_constraintTop_toTopOf="parent" />
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>

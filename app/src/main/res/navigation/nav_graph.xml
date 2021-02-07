@@ -3,32 +3,106 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/detailFragment">
+    app:startDestination="@id/skinFragment">
+
+    <fragment
+        android:id="@+id/skinFragment"
+        android:name="com.example.toyproject.ui.skin.SkinFragment"
+        android:label="fragment_skin"
+        tools:layout="@layout/fragment_skin">
+        <action
+            android:id="@+id/action_skinFragment_to_detailFragment"
+            app:destination="@id/detailFragment"
+            app:popUpTo="@id/detailFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_skinFragment_to_todaySkinFragment"
+            app:destination="@id/todaySkinFragment"
+            app:popUpTo="@id/todaySkinFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_skinFragment_to_mySkinFragment"
+            app:destination="@id/mySkinFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.toyproject.ui.detail.DetailFragment"
-        android:label="fragment_detail"
+        android:label="DetailFragment"
         tools:layout="@layout/fragment_detail">
         <argument
-            android:name="type"
-            android:defaultValue="TOXIN"
-            app:argType="com.example.toyproject.data.entities.SkinType" />
+            android:name="skinType"
+            android:defaultValue="@null"
+            app:argType="com.example.toyproject.domain.model.SkinType"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_detailFragment_to_detailCustomFragment"
+            app:destination="@id/detailCustomFragment"
+            app:popUpTo="@id/detailCustomFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/todaySkinFragment"
+        android:name="com.example.toyproject.ui.today.TodaySkinFragment"
+        android:label="TodaySkinFragment"
+        app:enterAnim="@anim/slide_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_out"
+        tools:layout="@layout/fragment_today_skin">
+        <action
+            android:id="@+id/action_todaySkinFragment_to_detailCustomFragment"
+            app:destination="@id/detailCustomFragment"
+            app:popUpTo="@id/detailCustomFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/detailCustomFragment"
         android:name="com.example.toyproject.ui.detail.DetailCustomFragment"
-        android:label="DetailCustomFragment">
+        android:label="DetailCustomFragment"
+        app:enterAnim="@anim/slide_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_out"
+        tools:layout="@layout/fragment_detail_custom">
         <argument
-            android:name="type"
-            android:defaultValue="TOXIN"
-            app:argType="com.example.toyproject.data.entities.SkinType" />
+            android:name="skins"
+            android:defaultValue="@null"
+            app:argType="com.example.toyproject.data.db.entities.Skins"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mySkinFragment"
+        android:name="com.example.toyproject.ui.myskin.MySkinFragment"
+        android:label="MySkinFragment"
+        app:enterAnim="@anim/slide_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_out"
+        tools:layout="@layout/fragment_my_skin">
+        <action
+            android:id="@+id/action_mySkinFragment_to_detailCustomFragment"
+            app:destination="@id/detailCustomFragment"
+            app:popUpTo="@id/detailCustomFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <action
-        android:id="@+id/action_global_detailCustomFragment"
-        app:destination="@id/detailCustomFragment" />
-    <action
-        android:id="@+id/action_global_detailFragment"
-        app:destination="@id/detailFragment" />
+        android:id="@+id/action_global_skinFragment"
+        app:destination="@id/skinFragment"
+        app:enterAnim="@anim/slide_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/slide_out"
+        app:popUpTo="@id/skinFragment"
+        app:popUpToInclusive="true" />
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.toyproject.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
 </navigation>

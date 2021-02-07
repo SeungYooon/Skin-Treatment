@@ -9,5 +9,4 @@ class SkinsDiffCallback : DiffUtil.ItemCallback<Skins>() {
 
     override fun areContentsTheSame(oldItem: Skins, newItem: Skins): Boolean =
         oldItem == newItem
-
 }
