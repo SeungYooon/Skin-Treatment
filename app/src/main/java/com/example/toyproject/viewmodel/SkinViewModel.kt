@@ -43,7 +43,7 @@ class SkinViewModel @ViewModelInject constructor(
 
     @ExperimentalCoroutinesApi
     override fun onCleared() {
-        super.onCleared()
         queryChannel.close()
+        super.onCleared()
     }
 }
