@@ -63,12 +63,12 @@ class MySkinFragment : BaseFragment<FragmentMySkinBinding>(), MySkinAdapter.OnCl
     }
 
     private fun setupItems() {
-        viewModel.skinLiveData.observe(viewLifecycleOwner, Observer {
-            when (it) {
+        viewModel.skinLiveData.observe(viewLifecycleOwner, Observer { skinList ->
+            when (skinList) {
                 is Resource.Success -> {
                     showProgress(false)
                     showRecyclerView(true)
-                    adapter.submitList(it.data)
+                    adapter.submitList(skinList.data)
                 }
                 is Resource.Error -> {
                     showRecyclerView(false)
