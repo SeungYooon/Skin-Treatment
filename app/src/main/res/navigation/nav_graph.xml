@@ -37,9 +37,7 @@
             app:nullable="true" />
         <action
             android:id="@+id/action_detailFragment_to_detailCustomFragment"
-            app:destination="@id/detailCustomFragment"
-            app:popUpTo="@id/detailCustomFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/detailCustomFragment" />
     </fragment>
 
     <fragment
@@ -53,9 +51,7 @@
         tools:layout="@layout/fragment_today_skin">
         <action
             android:id="@+id/action_todaySkinFragment_to_detailCustomFragment"
-            app:destination="@id/detailCustomFragment"
-            app:popUpTo="@id/detailCustomFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/detailCustomFragment" />
     </fragment>
 
     <fragment
@@ -68,9 +64,8 @@
         app:popExitAnim="@anim/slide_out"
         tools:layout="@layout/fragment_detail_custom">
         <argument
-            android:name="skins"
-            android:defaultValue="@null"
-            app:argType="com.example.toyproject.data.db.entities.Skins"
+            android:name="skinInfo"
+            app:argType="com.example.toyproject.data.db.entities.SkinInfo"
             app:nullable="true" />
     </fragment>
 

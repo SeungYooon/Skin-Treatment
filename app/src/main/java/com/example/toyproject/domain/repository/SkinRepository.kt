@@ -1,21 +1,20 @@
 package com.example.toyproject.domain.repository
 
-import com.example.toyproject.data.db.entities.Skins
-import com.example.toyproject.util.Resource
+import com.example.toyproject.data.db.entities.SkinInfo
 import kotlinx.coroutines.flow.Flow
 
 interface SkinRepository {
-    fun getAllSkins(): Flow<Resource<List<Skins>>>
+    fun loadAllSkins(): Flow<List<SkinInfo>>
 
-    fun getSkinsByTitle(skinTitle: String): Flow<List<Skins>>
+    fun loadSkinsByTitle(skinTitle: String): Flow<List<SkinInfo>>
 
-    fun loadAllSkins(): Flow<List<Skins>>
+    fun getAllSkins(): Flow<List<SkinInfo>>
 
-    fun loadBySkinTitle(skinTitle: String): Flow<List<Skins>>
+    fun getSkinByTitle(skinTitle: String): Flow<List<SkinInfo>>
 
-    fun searchBySkinKinds(skinKinds: String): Flow<List<Skins>>
+    fun searchBySkinKinds(skinKinds: String): Flow<List<SkinInfo>>
 
-    suspend fun insertSkins(skins: Skins)
+    suspend fun insertSkins(skinInfo: SkinInfo)
 
     suspend fun deleteAllSkins()
 

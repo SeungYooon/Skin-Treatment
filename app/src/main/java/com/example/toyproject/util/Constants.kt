@@ -6,4 +6,10 @@ object Constants {
     const val CONNECT_TIMEOUT = 40L
     const val WRITE_TIMEOUT = 30L
     const val READ_TIMEOUT = 40L
+    const val TOXIN = "toxin"
+    const val FILLER = "filler"
+    const val INJECT = "inject"
+    const val LIFTING = "lifting"
+    const val ACNE = "acne"
+    const val WAXING = "waxing"
 }
