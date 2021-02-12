@@ -8,10 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.toyproject.R
 import com.example.toyproject.base.BaseFragment
-import com.example.toyproject.data.db.entities.Skins
+import com.example.toyproject.data.db.entities.SkinInfo
 import com.example.toyproject.databinding.FragmentTodaySkinBinding
-import com.example.toyproject.util.Resource
 import com.example.toyproject.util.extensions.bindAdapterTransform
 import com.example.toyproject.util.extensions.bindImage
 import com.example.toyproject.util.extensions.setAdapter
@@ -21,6 +23,7 @@ import com.irozon.alertview.AlertStyle
 import com.irozon.alertview.AlertView
 import com.irozon.alertview.objects.AlertAction
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,8 +34,6 @@ class TodaySkinFragment : BaseFragment<FragmentTodaySkinBinding>(),
     lateinit var adapter: TodaySkinAdapter
 
     private val skinViewModel: SkinViewModel by viewModels()
-
-    lateinit var skinTitle: String
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentTodaySkinBinding =
         FragmentTodaySkinBinding::inflate
@@ -52,49 +53,72 @@ class TodaySkinFragment : BaseFragment<FragmentTodaySkinBinding>(),
     }
 
     private fun setUpObserver() {
-        skinViewModel.getAllSkins.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Resource.Loading -> {
-                    showProgress(true)
-                    showRecyclerView(false)
-                }
-                is Resource.Success -> {
-                    showProgress(false)
-                    showRecyclerView(true)
-                    todayRandomSkin(it.data)
-                    adapter.submitList(it.data)
-                }
-                is Resource.Error -> {
-                    showProgress(false)
-                    binding.txtError.isVisible = true
-                }
+        lifecycleScope.launchWhenStarted {
+            skinViewModel.isLoading.collect {
+                showProgress()
+                hideRecyclerview()
             }
+        }
+        skinViewModel.allSkins.observe(viewLifecycleOwner, Observer { skinList ->
+            hideProgress()
+            hideErrorText()
+            showRecyclerView()
+            todayRandomSkin(skinList)
+            adapter.submitList(skinList)
         })
-    }
-
-    private fun todayRandomSkin(skins: List<Skins>) {
-        skins.random().apply {
-            binding.apply {
-                txtSkinTitle.text = skinTitle
-                txtSkinKinds.text = skinKinds
-                bindImage(imgTodaySkin, imageUrl)
+        lifecycleScope.launchWhenStarted {
+            skinViewModel.isError.collect {
+                hideProgress()
+                showErrorText()
             }
         }
     }
 
-    private fun showRecyclerView(status: Boolean) {
-        binding.dsView.isVisible = status
+    private fun todayRandomSkin(skins: List<SkinInfo>) = skins.random().run {
+        binding.apply {
+            txtSkinTitle.text = skinTitle
+            txtSkinKinds.text = skinKinds
+            bindImage(imgTodaySkin, imageUrl)
+        }
     }
 
-    private fun showProgress(status: Boolean) {
-        binding.loadingView.isVisible = status
+    private fun showRecyclerView() {
+        binding.dsView.isVisible = true
     }
 
-    override fun onClick(skins: Skins) {
-        val alert = AlertView("Item Save", "choice", AlertStyle.IOS)
-        alert.addAction(AlertAction("Save", AlertActionStyle.POSITIVE) {
-            skinViewModel.saveSkins(skins)
+    private fun hideRecyclerview() {
+        binding.dsView.isVisible = false
+    }
+
+    private fun showProgress() {
+        binding.loadingView.isVisible = true
+    }
+
+    private fun hideProgress() {
+        binding.loadingView.isVisible = false
+    }
+
+    private fun showErrorText() {
+        binding.txtError.isVisible = true
+    }
+
+    private fun hideErrorText() {
+        binding.txtError.isVisible = false
+    }
+
+    override fun onClickSave(skinInfo: SkinInfo) {
+        val alert = AlertView(getString(R.string.save_one), "", AlertStyle.IOS)
+        alert.addAction(AlertAction(getString(R.string.yes), AlertActionStyle.POSITIVE) {
+            skinViewModel.saveSkins(skinInfo)
         })
         alert.show(requireActivity() as AppCompatActivity)
+    }
+
+    override fun onClickItem(skinInfo: SkinInfo) {
+        findNavController().navigate(
+            TodaySkinFragmentDirections.actionTodaySkinFragmentToDetailCustomFragment(
+                skinInfo
+            )
+        )
     }
 }

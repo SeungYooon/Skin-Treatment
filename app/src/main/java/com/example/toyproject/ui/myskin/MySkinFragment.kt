@@ -9,12 +9,14 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
+import androidx.navigation.fragment.findNavController
+import com.example.toyproject.R
 import com.example.toyproject.base.BaseFragment
+import com.example.toyproject.data.db.entities.SkinInfo
 import com.example.toyproject.databinding.FragmentMySkinBinding
-import com.example.toyproject.util.Resource
 import com.example.toyproject.util.extensions.setAdapter
 import com.example.toyproject.viewmodel.MySkinViewModel
-import com.google.android.material.chip.Chip
 import com.irozon.alertview.AlertActionStyle
 import com.irozon.alertview.AlertStyle
 import com.irozon.alertview.AlertView
@@ -24,8 +26,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import javax.inject.Inject
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MySkinFragment : BaseFragment<FragmentMySkinBinding>(), MySkinAdapter.OnClickListener {
 
@@ -37,14 +37,16 @@ class MySkinFragment : BaseFragment<FragmentMySkinBinding>(), MySkinAdapter.OnCl
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentMySkinBinding =
         FragmentMySkinBinding::inflate
 
+    @FlowPreview
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupUI()
-        setupItems()
-        setupDeleteItem()
+        loadSkins()
+        setupDeleteAll()
         setupSearch()
-        setUpChips()
+        setupChips()
     }
 
     private fun setupUI() {
@@ -52,37 +54,35 @@ class MySkinFragment : BaseFragment<FragmentMySkinBinding>(), MySkinAdapter.OnCl
         binding.searchView.setQuery("", false)
     }
 
-    private fun setupDeleteItem() {
+    private fun setupDeleteAll() {
         binding.imgDeleteAll.setOnClickListener {
-            val alert = AlertView("Delete Item All", "choice", AlertStyle.IOS)
-            alert.addAction(AlertAction("Delete All", AlertActionStyle.NEGATIVE) {
+            val alert = AlertView(getString(R.string.delete_all), "", AlertStyle.IOS)
+            alert.addAction(AlertAction(getString(R.string.yes), AlertActionStyle.NEGATIVE) {
                 viewModel.deleteAllSkins()
             })
             alert.show(requireActivity() as AppCompatActivity)
         }
     }
 
-    private fun setupItems() {
-        viewModel.skinLiveData.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Resource.Success -> {
-                    showProgress(false)
-                    showRecyclerView(true)
-                    adapter.submitList(it.data)
-                }
-                is Resource.Error -> {
-                    showRecyclerView(false)
-                    binding.txtNoItem.isVisible = true
-                }
-                Resource.Loading -> {
-                    showProgress(true)
-                    showRecyclerView(false)
-                }
-            }
+    private fun loadSkins() {
+        viewModel.isLoading.asLiveData().observe(viewLifecycleOwner, Observer {
+            showProgress()
+            hideRecyclerView()
         })
-        viewModel.loadAllMySkin()
+        viewModel.isError.asLiveData().observe(viewLifecycleOwner, Observer {
+            hideRecyclerView()
+            showErrorText()
+        })
+        viewModel.isSuccess.asLiveData().observe(viewLifecycleOwner, Observer { skinList ->
+            hideProgress()
+            hideErrorText()
+            showRecyclerView()
+            adapter.submitList(skinList.data)
+        })
     }
 
+    @FlowPreview
+    @ExperimentalCoroutinesApi
     private fun setupSearch() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -100,38 +100,53 @@ class MySkinFragment : BaseFragment<FragmentMySkinBinding>(), MySkinAdapter.OnCl
         })
     }
 
-    private fun setUpChips() {
-        with(binding) {
-            chipToxin.onClick("toxin")
-            chipAcne.onClick("acne")
-            chipFiller.onClick("filler")
-            chipLifting.onClick("lifting")
-            chipWaxing.onClick("waxing")
-            chipInjection.onClick("inject")
+    @FlowPreview
+    @ExperimentalCoroutinesApi
+    private fun setupChips() {
+        viewModel.fetchBySkinTitle.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
+        })
+
+        binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
+            viewModel.fetchBySkinTitle(checkedId)
         }
     }
 
-    private fun Chip.onClick(skinTitle: String) {
-        setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                viewModel.fetchBySkinTitle(skinTitle)
-            } else viewModel.loadAllMySkin()
-        }
+    private fun showRecyclerView() {
+        binding.rvMySkin.isVisible = true
     }
 
-    private fun showRecyclerView(status: Boolean) {
-        binding.rvMySkin.isVisible = status
+    private fun hideRecyclerView() {
+        binding.rvMySkin.isVisible = false
     }
 
-    private fun showProgress(status: Boolean) {
-        binding.loadingView.isVisible = status
+    private fun showProgress() {
+        binding.loadingView.isVisible = true
     }
 
-    override fun onClick(skinKinds: String) {
-        val alert = AlertView("Item Delete One", "choice", AlertStyle.IOS)
-        alert.addAction(AlertAction("Delete", AlertActionStyle.NEGATIVE) {
+    private fun hideProgress() {
+        binding.loadingView.isVisible = false
+    }
+
+    private fun showErrorText() {
+        binding.txtNoItem.isVisible = true
+    }
+
+    private fun hideErrorText() {
+        binding.txtNoItem.isVisible = false
+    }
+
+    override fun onClickDelete(skinKinds: String) {
+        val alert = AlertView(getString(R.string.delete_one), "", AlertStyle.IOS)
+        alert.addAction(AlertAction(getString(R.string.yes), AlertActionStyle.NEGATIVE) {
             viewModel.deleteOneSkin(skinKinds)
         })
         alert.show(requireActivity() as AppCompatActivity)
+    }
+
+    override fun onClickItem(skinInfo: SkinInfo) {
+        findNavController().navigate(
+            MySkinFragmentDirections.actionMySkinFragmentToDetailCustomFragment(skinInfo)
+        )
     }
 }
