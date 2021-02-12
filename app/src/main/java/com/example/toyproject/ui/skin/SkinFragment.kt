@@ -30,7 +30,14 @@ class SkinFragment : BaseFragment<FragmentSkinBinding>(), SkinAdapter.OnClickLis
         super.onViewCreated(view, savedInstanceState)
 
         setupUI()
-        setUpObserver()
+        setupType()
+    }
+
+    private fun setupUI() {
+        binding.apply {
+            setAdapter(dsView, adapter)
+            bindAdapterTransform(dsView, true)
+        }
 
         binding.fabFavorite.setOnClickListener {
             findNavController().navigate(R.id.action_skinFragment_to_mySkinFragment)
@@ -41,14 +48,7 @@ class SkinFragment : BaseFragment<FragmentSkinBinding>(), SkinAdapter.OnClickLis
         }
     }
 
-    private fun setupUI() {
-        binding.apply {
-            setAdapter(dsView, adapter)
-            bindAdapterTransform(dsView, true)
-        }
-    }
-
-    private fun setUpObserver() {
+    private fun setupType() {
         adapter.submitList(
             mutableListOf(
                 SkinType.TOXIN,

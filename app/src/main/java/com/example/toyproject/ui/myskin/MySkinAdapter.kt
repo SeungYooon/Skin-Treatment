@@ -2,17 +2,16 @@ package com.example.toyproject.ui.myskin
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.toyproject.data.db.entities.Skins
+import com.example.toyproject.data.db.entities.SkinInfo
 import com.example.toyproject.databinding.ItemMySkinBinding
-import com.example.toyproject.util.extensions.SkinsDiffCallback
+import com.example.toyproject.util.extensions.SkinInfoDiffCallback
 import com.example.toyproject.util.extensions.bindImage
 import javax.inject.Inject
 
 class MySkinAdapter @Inject constructor(private val listener: OnClickListener?) :
-    ListAdapter<Skins, MySkinAdapter.MySkinViewHolder>(SkinsDiffCallback()) {
+    ListAdapter<SkinInfo, MySkinAdapter.MySkinViewHolder>(SkinInfoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MySkinViewHolder {
         return MySkinViewHolder(
@@ -31,7 +30,7 @@ class MySkinAdapter @Inject constructor(private val listener: OnClickListener?) 
     inner class MySkinViewHolder(private val binding: ItemMySkinBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Skins) {
+        fun bind(item: SkinInfo) {
             binding.apply {
                 bindImage(imgFavoriteSkin, item.imageUrl)
 
@@ -39,19 +38,18 @@ class MySkinAdapter @Inject constructor(private val listener: OnClickListener?) 
                 txtSkinKinds.text = item.skinKinds
 
                 imgSelect.setOnClickListener {
-                    listener?.onClick(item.skinKinds)
+                    listener?.onClickDelete(item.skinKinds)
                 }
 
                 cardView.setOnClickListener {
-                    it.findNavController().navigate(
-                        MySkinFragmentDirections.actionMySkinFragmentToDetailCustomFragment(item)
-                    )
+                    listener?.onClickItem(item)
                 }
             }
         }
     }
 
     interface OnClickListener {
-        fun onClick(skinKinds: String)
+        fun onClickDelete(skinKinds: String)
+        fun onClickItem(skinInfo: SkinInfo)
     }
 }

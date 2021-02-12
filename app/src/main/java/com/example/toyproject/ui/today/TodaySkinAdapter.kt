@@ -2,18 +2,17 @@ package com.example.toyproject.ui.today
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.toyproject.data.db.entities.Skins
+import com.example.toyproject.data.db.entities.SkinInfo
 import com.example.toyproject.databinding.ItemTodaySkinBinding
-import com.example.toyproject.util.extensions.SkinsDiffCallback
+import com.example.toyproject.util.extensions.SkinInfoDiffCallback
 import com.example.toyproject.util.extensions.bindImage
 import javax.inject.Inject
 
 class TodaySkinAdapter @Inject constructor(
     private val listener: OnClickListener?
-) : ListAdapter<Skins, TodaySkinAdapter.TodaySkinViewHolder>(SkinsDiffCallback()) {
+) : ListAdapter<SkinInfo, TodaySkinAdapter.TodaySkinViewHolder>(SkinInfoDiffCallback()) {
 
     init {
         setHasStableIds(true)
@@ -38,7 +37,7 @@ class TodaySkinAdapter @Inject constructor(
     inner class TodaySkinViewHolder(private val binding: ItemTodaySkinBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Skins) {
+        fun bind(item: SkinInfo) {
             binding.apply {
                 bindImage(imgSkin, item.imageUrl)
 
@@ -46,22 +45,19 @@ class TodaySkinAdapter @Inject constructor(
                 txtSkinKinds.text = item.skinKinds
 
                 imgSelect.setOnClickListener {
-                    listener?.onClick(item)
+                    listener?.onClickSave(item)
                 }
 
                 imgSkin.setOnClickListener {
-                    it.findNavController().navigate(
-                        TodaySkinFragmentDirections.actionTodaySkinFragmentToDetailCustomFragment(
-                            item
-                        )
-                    )
+                    listener?.onClickItem(item)
                 }
             }
         }
     }
 
     interface OnClickListener {
-        fun onClick(skins: Skins)
+        fun onClickSave(skinInfo: SkinInfo)
+        fun onClickItem(skinInfo: SkinInfo)
     }
 }
 

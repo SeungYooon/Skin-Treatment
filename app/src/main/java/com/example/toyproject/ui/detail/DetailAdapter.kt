@@ -2,15 +2,16 @@ package com.example.toyproject.ui.detail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.toyproject.data.db.entities.Skins
+import com.example.toyproject.data.db.entities.SkinInfo
 import com.example.toyproject.databinding.ItemDetailBinding
-import com.example.toyproject.util.extensions.SkinsDiffCallback
+import com.example.toyproject.util.extensions.SkinInfoDiffCallback
 import com.example.toyproject.util.extensions.bindImage
+import javax.inject.Inject
 
-class DetailAdapter : ListAdapter<Skins, DetailAdapter.DetailViewHolder>(SkinsDiffCallback()) {
+class DetailAdapter @Inject constructor(private val onItemClicked: (SkinInfo) -> Unit) :
+    ListAdapter<SkinInfo, DetailAdapter.DetailViewHolder>(SkinInfoDiffCallback()) {
 
     init {
         setHasStableIds(true)
@@ -35,7 +36,7 @@ class DetailAdapter : ListAdapter<Skins, DetailAdapter.DetailViewHolder>(SkinsDi
     inner class DetailViewHolder(private val binding: ItemDetailBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Skins) {
+        fun bind(item: SkinInfo) {
             binding.apply {
                 bindImage(imgSkin, item.imageUrl)
 
@@ -43,9 +44,7 @@ class DetailAdapter : ListAdapter<Skins, DetailAdapter.DetailViewHolder>(SkinsDi
                 txtDescription.text = item.description
 
                 imgSkin.setOnClickListener {
-                    it.findNavController().navigate(
-                        DetailFragmentDirections.actionDetailFragmentToDetailCustomFragment(item)
-                    )
+                    onItemClicked(item)
                 }
             }
         }

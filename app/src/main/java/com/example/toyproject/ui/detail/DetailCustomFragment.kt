@@ -24,9 +24,9 @@ class DetailCustomFragment : BaseFragment<FragmentDetailCustomBinding>() {
 
     private fun setupUI() {
         binding.apply {
-            txtDescription.text = safeArgs.skins?.description
-            txtPointDescription.text = safeArgs.skins?.point
-            bindImage(imgDetailCustom, safeArgs.skins?.imageUrl)
+            txtDescription.text = safeArgs.skinInfo?.description
+            txtPointDescription.text = safeArgs.skinInfo?.point
+            bindImage(imgDetailCustom, safeArgs.skinInfo?.imageUrl)
         }
     }
 }

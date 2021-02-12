@@ -1,7 +1,7 @@
 package com.example.toyproject.di
 
-import com.example.toyproject.data.remote.SkinDataSource
-import com.example.toyproject.data.remote.SkinDataSourceImpl
+import com.example.toyproject.data.remote.response.SkinDataSource
+import com.example.toyproject.data.remote.response.SkinRemoteDataSource
 import com.example.toyproject.data.remote.service.SkinService
 import dagger.Module
 import dagger.Provides
@@ -21,6 +21,6 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun provideSkinDataSource(skinDataSourceImpl: SkinDataSourceImpl): SkinDataSource =
-        skinDataSourceImpl
+    fun provideSkinDataSource(skinRemoteDataSource: SkinRemoteDataSource): SkinDataSource =
+        skinRemoteDataSource
 }
