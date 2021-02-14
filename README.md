@@ -21,7 +21,7 @@
   - **Room** - construct a database using the abstract layer.
   - **Navigation** - Framework to navigate between targets
   
-- **Flow & Channel** - handle asynchronous cold stream & hot stream
+- **Flow, StateFlow & Channel** - handle asynchronous cold stream & hot stream
 - **AlertView** - custom dialog view
 
 
