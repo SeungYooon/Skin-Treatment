@@ -107,10 +107,6 @@
     <string name="n2">백옥주사</string>
     <string name="n3">신데렐라 주사</string>
 
-    <!-- answer -->
-    <string name="yes">네</string>
-    <string name="no">아니요</string>
-
     <!-- transition -->
     <string name="transition_name">skin</string>
 
@@ -129,4 +125,11 @@
 
     <!-- favorite -->
     <string name="no_item">추가한 시술이 없습니다.</string>
+
+    <!-- alertView-->
+    <string name="delete_all">모든 시술을 삭제할까요?</string>
+    <string name="delete_one">해당 시술을 삭제할까요?</string>
+    <string name="save_one">해당 시술을 추가할까요?</string>
+    <string name="yes">네</string>
+    <string name="no">아니요</string>
 </resources>

@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "skins")
 @Parcelize
-data class Skins(
+data class SkinInfo(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     @ColumnInfo(name = "skin_title")

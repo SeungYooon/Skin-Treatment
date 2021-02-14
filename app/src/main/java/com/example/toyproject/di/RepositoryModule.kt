@@ -1,7 +1,7 @@
 package com.example.toyproject.di
 
+import com.example.toyproject.data.SkinRepositoryImpl
 import com.example.toyproject.domain.repository.SkinRepository
-import com.example.toyproject.domain.repository.SkinRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
