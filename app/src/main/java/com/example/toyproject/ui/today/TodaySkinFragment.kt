@@ -8,12 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.toyproject.R
 import com.example.toyproject.base.BaseFragment
 import com.example.toyproject.data.db.entities.SkinInfo
 import com.example.toyproject.databinding.FragmentTodaySkinBinding
+import com.example.toyproject.util.State
 import com.example.toyproject.util.extensions.bindAdapterTransform
 import com.example.toyproject.util.extensions.bindImage
 import com.example.toyproject.util.extensions.setAdapter
@@ -23,7 +24,6 @@ import com.irozon.alertview.AlertStyle
 import com.irozon.alertview.AlertView
 import com.irozon.alertview.objects.AlertAction
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -53,25 +53,24 @@ class TodaySkinFragment : BaseFragment<FragmentTodaySkinBinding>(),
     }
 
     private fun setUpObserver() {
-        lifecycleScope.launchWhenStarted {
-            skinViewModel.isLoading.collect {
-                showProgress()
-                hideRecyclerview()
+        skinViewModel.uiState.asLiveData().observe(viewLifecycleOwner, Observer {skinList->
+            when (skinList) {
+                is State.Error -> {
+                    hideProgress()
+                    showErrorText()
+                }
+                State.Loading -> {
+                    showProgress()
+                    hideRecyclerview()
+                }
+                is State.Success -> {
+                    hideProgress()
+                    showRecyclerView()
+                    todayRandomSkin(skinList.data)
+                    adapter.submitList(skinList.data)
+                }
             }
-        }
-        skinViewModel.allSkins.observe(viewLifecycleOwner, Observer { skinList ->
-            hideProgress()
-            hideErrorText()
-            showRecyclerView()
-            todayRandomSkin(skinList)
-            adapter.submitList(skinList)
         })
-        lifecycleScope.launchWhenStarted {
-            skinViewModel.isError.collect {
-                hideProgress()
-                showErrorText()
-            }
-        }
     }
 
     private fun todayRandomSkin(skins: List<SkinInfo>) = skins.random().run {
@@ -100,10 +99,6 @@ class TodaySkinFragment : BaseFragment<FragmentTodaySkinBinding>(),
 
     private fun showErrorText() {
         binding.txtError.isVisible = true
-    }
-
-    private fun hideErrorText() {
-        binding.txtError.isVisible = false
     }
 
     override fun onClickSave(skinInfo: SkinInfo) {

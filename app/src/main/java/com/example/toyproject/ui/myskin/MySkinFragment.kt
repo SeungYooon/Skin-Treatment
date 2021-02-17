@@ -15,6 +15,7 @@ import com.example.toyproject.R
 import com.example.toyproject.base.BaseFragment
 import com.example.toyproject.data.db.entities.SkinInfo
 import com.example.toyproject.databinding.FragmentMySkinBinding
+import com.example.toyproject.util.State
 import com.example.toyproject.util.extensions.setAdapter
 import com.example.toyproject.viewmodel.MySkinViewModel
 import com.irozon.alertview.AlertActionStyle
@@ -65,19 +66,43 @@ class MySkinFragment : BaseFragment<FragmentMySkinBinding>(), MySkinAdapter.OnCl
     }
 
     private fun loadSkins() {
-        viewModel.isLoading.asLiveData().observe(viewLifecycleOwner, Observer {
-            showProgress()
-            hideRecyclerView()
-        })
-        viewModel.isError.asLiveData().observe(viewLifecycleOwner, Observer {
-            hideRecyclerView()
-            showErrorText()
-        })
-        viewModel.isSuccess.asLiveData().observe(viewLifecycleOwner, Observer { skinList ->
-            hideProgress()
-            hideErrorText()
-            showRecyclerView()
-            adapter.submitList(skinList.data)
+        /* viewModel.isLoading.asLiveData().observe(viewLifecycleOwner, Observer {
+             showProgress()
+             Log.v("@@@@@@@@", "loading")
+             hideRecyclerView()
+         })
+         viewModel.isError.asLiveData().observe(viewLifecycleOwner, Observer {
+             hideRecyclerView()
+             Log.v("@@@@@@@@", "error")
+             showErrorText()
+         })
+         viewModel.isSuccess.asLiveData().observe(viewLifecycleOwner, Observer { skinList ->
+             hideProgress()
+             Log.v("@@@@@@@@", "success")
+             hideErrorText()
+             showRecyclerView()
+             adapter.submitList(skinList.data)
+         })*/
+        viewModel.uiState.asLiveData().observe(viewLifecycleOwner, Observer { skinList ->
+            when (skinList) {
+                State.Empty -> {
+                    showEmptyList()
+                }
+                is State.Error -> {
+                    hideRecyclerView()
+                    showErrorText()
+                }
+                State.Loading -> {
+                    showProgress()
+                    hideRecyclerView()
+                }
+                is State.Success -> {
+                    hideProgress()
+                    hideEmptyList()
+                    showRecyclerView()
+                    adapter.submitList(skinList.data)
+                }
+            }
         })
     }
 
@@ -129,10 +154,14 @@ class MySkinFragment : BaseFragment<FragmentMySkinBinding>(), MySkinAdapter.OnCl
     }
 
     private fun showErrorText() {
+        binding.txtError.isVisible = true
+    }
+
+    private fun showEmptyList() {
         binding.txtNoItem.isVisible = true
     }
 
-    private fun hideErrorText() {
+    private fun hideEmptyList() {
         binding.txtNoItem.isVisible = false
     }
 
