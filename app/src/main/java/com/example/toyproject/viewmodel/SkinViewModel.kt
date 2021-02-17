@@ -20,6 +20,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -27,16 +28,20 @@ class SkinViewModel @ViewModelInject constructor(
     private val skinRepository: SkinRepository,
     private val dispatchers: BaseProvider
 ) : ViewModel() {
-    private val _isError = MutableStateFlow(State.error(null))
-    private val _isLoading = MutableStateFlow(State.loading())
+    private val _uiState = MutableStateFlow<State<List<SkinInfo>>>(State.empty())
+    val uiState = _uiState.asStateFlow()
 
-    val isError: StateFlow<State.Error> get() = _isError
-    val isLoading: StateFlow<State.Loading> get() = _isLoading
-
-    val allSkins = skinRepository.loadAllSkins()
-        .onStart { _isLoading.value = State.loading() }
-        .catch { e -> _isError.value = State.error(e) }
-        .asLiveData(viewModelScope.coroutineContext + dispatchers.io)
+    init {
+        viewModelScope.launch(dispatchers.io) {
+            skinRepository.loadAllSkins()
+                .onStart {
+                    _uiState.value = State.loading()
+                    delay(300)
+                }
+                .catch { e -> _uiState.value = State.error(e) }
+                .collect { skinList -> _uiState.value = State.success(skinList) }
+        }
+    }
 
     @ExperimentalCoroutinesApi
     val queryChannel = BroadcastChannel<String>(Channel.CONFLATED)

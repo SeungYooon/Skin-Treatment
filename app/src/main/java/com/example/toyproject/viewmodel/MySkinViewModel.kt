@@ -15,6 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -23,21 +24,22 @@ class MySkinViewModel @ViewModelInject constructor(
     private val dispatchers: BaseProvider,
     val skinTitle: String
 ) : ViewModel() {
-    private val _isError = MutableStateFlow(State.error(null))
-    private val _isLoading = MutableStateFlow(State.loading())
-    private val _isSuccess = MutableStateFlow(State.success(emptyList()))
-
-    val isSuccess: StateFlow<State.Success<List<SkinInfo>>> get() = _isSuccess
-    val isError: StateFlow<State.Error> get() = _isError
-    val isLoading: StateFlow<State.Loading> get() = _isLoading
+    private val _uiState = MutableStateFlow<State<List<SkinInfo>>>(State.empty())
+    val uiState = _uiState.asStateFlow()
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatchers.io) {
             skinRepository.getAllSkins()
-                .flowOn(dispatchers.io)
-                .onStart { _isLoading.value = State.loading() }
-                .catch { e -> _isError.value = State.error(e) }
-                .collect { _isSuccess.value = State.success(it) }
+                .onStart {
+                    _uiState.value = State.loading()
+                    delay(300)
+                }
+                .catch { e -> _uiState.value = State.error(e) }
+                .collect { skinList ->
+                    if (skinList.isEmpty()) {
+                        _uiState.value = State.empty()
+                    } else _uiState.value = State.success(skinList)
+                }
         }
     }
 
