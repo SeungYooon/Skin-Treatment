@@ -13,6 +13,10 @@ class SkinActivity : BaseActivity<ActivitySkinBinding>(ActivitySkinBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initNavigation()
+    }
+
+    private fun initNavigation() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController

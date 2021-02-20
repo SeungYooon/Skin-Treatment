@@ -66,23 +66,6 @@ class MySkinFragment : BaseFragment<FragmentMySkinBinding>(), MySkinAdapter.OnCl
     }
 
     private fun loadSkins() {
-        /* viewModel.isLoading.asLiveData().observe(viewLifecycleOwner, Observer {
-             showProgress()
-             Log.v("@@@@@@@@", "loading")
-             hideRecyclerView()
-         })
-         viewModel.isError.asLiveData().observe(viewLifecycleOwner, Observer {
-             hideRecyclerView()
-             Log.v("@@@@@@@@", "error")
-             showErrorText()
-         })
-         viewModel.isSuccess.asLiveData().observe(viewLifecycleOwner, Observer { skinList ->
-             hideProgress()
-             Log.v("@@@@@@@@", "success")
-             hideErrorText()
-             showRecyclerView()
-             adapter.submitList(skinList.data)
-         })*/
         viewModel.uiState.asLiveData().observe(viewLifecycleOwner, Observer { skinList ->
             when (skinList) {
                 State.Empty -> {
