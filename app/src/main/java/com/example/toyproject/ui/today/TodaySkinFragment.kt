@@ -53,7 +53,7 @@ class TodaySkinFragment : BaseFragment<FragmentTodaySkinBinding>(),
     }
 
     private fun setUpObserver() {
-        skinViewModel.uiState.asLiveData().observe(viewLifecycleOwner, Observer {skinList->
+        skinViewModel.uiState.asLiveData().observe(viewLifecycleOwner, Observer { skinList ->
             when (skinList) {
                 is State.Error -> {
                     hideProgress()
